@@ -13,7 +13,7 @@ print("Database connection established.")
 con.execute('create schema if not exists synpuf')
 
 # create metadata table
-con.execute('create table if not exists synpuf.metadata (timestamp timestamp, message varchar)')
+con.execute('create table if not exists synpuf.logs (timestamp timestamp, message varchar)')
 
 # create tables
 tables = [
@@ -43,13 +43,13 @@ for table in tables:
         else:
             print(f'File {csv_file} not found or is not a csv file.')
 
-def extract_etl_stats(base_output_directory):
-    print('processing metadata files...')
+def extract_etl_stats(BASE_OUTPUT_DIRECTORY):
+    print('processing log files...')
     pattern = re.compile(r'\[(.*?)\](.*)')
     etl_stats_df = pd.DataFrame(columns=['Timestamp', 'Message'])
     
     for i in range(1, 21):
-        log_file_path = os.path.join(base_output_directory, f'etl_stats_{i}.txt')
+        log_file_path = os.path.join(BASE_OUTPUT_DIRECTORY, f'etl_stats_{i}.txt')
         if os.path.exists(log_file_path):
             with open(log_file_path, 'r') as f:
                 for line in f:
@@ -62,8 +62,8 @@ def extract_etl_stats(base_output_directory):
 etl_stats_df = extract_etl_stats(BASE_OUTPUT_DIRECTORY)
 
 # use con.execute to add etl_stats_df to the metadata table
-print('Building metadata table...')
-con.execute('insert into synpuf.metadata select * from etl_stats_df')
+print('Building logs table...')
+con.execute('insert into synpuf.logs select * from etl_stats_df')
 
 # close the connection
 con.close()
