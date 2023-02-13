@@ -6,36 +6,26 @@ that can then be bulk-loaded into your RDBMS of choice.
 
 ## Overview of Steps
 
-1. Install required software
+1. Clone the repo and run the docker container
+2. cd into the etl directory
+3. Type 'python pipeline.py' to run the ETL - pipeline.py is a script that runs the 3 etl steps, extract.py, transform.py, and load.py
+4. Enter answers to the prompts
 
-1. [Download SynPUF input data](#Download-SynPUF-input-data)
+The Entire pipeline takes about 2 hours to run. If testing, please only select one sample to run.
 
-1. [Download CDMv5 Vocabulary files](#Download-CDMv5-Vocabulary-Files)
-
-1. [Setup the environment file](#Setup-the-environment-file)
-
-1. [Test ETL with CMS test data](#Test-ETL-with-CMS-test-data)
-
-1. [Run ETL on CMS data](#Run-ETL-on-CMS-data)
-
-1. [Load data into the database](#Load-data-into-the-database)
-
-1. [Open issues and caveats with the ETL](#Open-issues-and-caveats-with-the-ETL)
-
-## Install required software
+## What's going on under the hood?
+### Install required software
 
 The ETL process comes in a Docker container with all necessary files and packages. To run the ETL, you need to have Docker installed on your machine. You can download Docker from [here](https://www.docker.com/products/docker-desktop).
 
 The original ETL required python 2.7 and the dotenv library, but some code has been updated to be compatible with python 3 and has been tested with python 3.11
 
-## Download SynPUF input data
-The SynPUF data is divided into 20 parts (8 files per part), and the files for each part should be saved in respective directories DE_1 through DE_20.
-They can either be downloaded with a python utility script (get_synpuf_files.py) or manually, described in the next two subsections.
+### Download SynPUF input data
+The SynPUF data is divided into 20 parts (8 files per part), and the files for each part should be saved in respective directories DE_1 through DE_20. They can either be downloaded with a python utility script (``extract.py``) or manually, described in the next two subsections.
 
-### Download using python script:
+#### Download using python script:
 
-In the ETL-CMS/scripts folder, there is a python program 'get_synpuf_files.py',
-which can be run to fetch one or more of the 20 SynPUF data sets. Run as follows:
+In the etl folder, there is a python program 'extract.py', which can be run to fetch one or more of the 20 SynPUF data sets. Run as follows:
 
 ``python extract.py path/to/output/directory <SAMPLE> ... [SAMPLE]``
 
@@ -49,7 +39,7 @@ To obtain all of the data, run:
 OR
 ``python extract.py path/to/output/directory all``
 
-### Manual download:
+#### Manual download:
 Hyperlinks to the 20 parts can be found here:
 <https://www.cms.gov/Research-Statistics-Data-and-Systems/Downloadable-Public-Use-Files/SynPUFs/DE_Syn_PUF.html>
 
@@ -69,7 +59,7 @@ to 'DE1_0_2008_to_2010_Carrier_Claims_Sample_11A.zip'.
 Also, some zipped files have '.Copy.csv' file inside them. Rename those files from 'Copy.csv' to '.csv' after unzipping the zipped files.
 If you use the download script, you don't have to do all of these manual steps. The script will take care of all these.
 
-## Download CDMv5 Vocabulary files
+#### Download CDMv5 Vocabulary files (already added to repo)
 Download vocabulary files from <http://www.ohdsi.org/web/athena/>, ensuring that you select at minimum, the following vocabularies:
 SNOMED, ICD9CM, ICD9Proc, CPT4, HCPCS, LOINC, RxNorm, and NDC.
 
@@ -78,27 +68,18 @@ SNOMED, ICD9CM, ICD9Proc, CPT4, HCPCS, LOINC, RxNorm, and NDC.
 ``java -Dumls-apikey=<xxx> -jar cpt4.jar 5 <output-file-name>``, which will append the CPT4 concepts to the CONCEPT.csv file. You will need to pass in your UMLS credentials in order for this command to work. Only ``apikey`` and ``5`` are required.
 - Note: This command works with Java version 10 or below.
 
-- Note: These files as of 2023-02-07 are available in the /workspaces/practice/cms-synpuf/Data/BASE_OMOP_INPUT_DIRECTORY directory.
+- Note: These files as of 2023-02-07 are available in the /Users/me/Documents/GitHub/dec-etl-project/data/BASE_OMOP_INPUT_DIRECTORY directory.
 
-## Setup the environment file
+#### Setup the environment file
 Edit the variables in the .env file which specify various directories used during the ETL process.
-Example .env files are provided for Windows (.env.example.windows) and unix (.env.example.unix) runs,
-differing only in path name constructs.
+Environment files have been edited to include appropriate directories in the data folder of the repo.
 
-- Set BASE\_SYNPUF\_INPUT\_DIRECTORY to where the downloaded CMS
-directories are contained, that is, the DE\_1 through DE\_20 directories.
-- Set BASE\_OMOP\_INPUT\_DIRECTORY to the CDM v5 vocabulary directory, for example: /workspaces/practice/cms-synpuf/Data/BASE_OMOP_INPUT_DIRECTORY.
-- Create a directory and set its path to BASE\_OUTPUT\_DIRECTORY. This
-directory will contain all of the output files after running the ETL.
-- Create a directory and set its path to
-BASE\_ETL\_CONTROL\_DIRECTORY. This contains files used for
-auto-incrementing record numbers and keeping track of physicians
-and physician institutions over the 20 parts so that the seperate DE\_1 through
-DE\_20 directories can be processed sequentially. These
-files need to be deleted if you want to restart numbering.
+- BASE\_SYNPUF\_INPUT\_DIRECTORY = where the downloaded CMS directories are contained, that is, the DE\_1 through DE\_20 directories.
+- BASE\_OMOP\_INPUT\_DIRECTORY = the CDM v5 vocabulary directory, for example: /workspaces/practice/cms-synpuf/Data/BASE_OMOP_INPUT_DIRECTORY.
+- BASE\_OUTPUT\_DIRECTORY = contains all of the output files after running the ETL.
+- BASE\_ETL\_CONTROL\_DIRECTORY = contains files used for auto-incrementing record numbers and keeping track of physicians and physician institutions over the 20 parts so that the seperate DE\_1 through DE\_20 directories can be processed sequentially. These files need to be deleted if you want to restart numbering.
 
 ## Run ETL on CMS data
-
 To process any of the DE_1 to DE_20 folders, run:
 
 - ``python transform.py <sample number>``
@@ -106,16 +87,9 @@ To process any of the DE_1 to DE_20 folders, run:
     - e.g. ``python transform.py 4`` will run the ETL on the SynPUF data in the DE_4 directory
     - The resulting output files should be suitable for bulk loading into a CDM v5 database.
 
-The runs cannot be done in parallel because counters and unique
-physician and physician institution providers are detected and carried
-over multiple runs (saved in BASE\_ETL\_CONTROL\_DIRECTORY). We
-recommend running them sequentially from 1 through 20 to produce a
-complete ETL of the approximately 2.33M patients. If you wanted only
-1/20th of the data, you could run only sample number 1 and load the
-resulting .csv files into your database.
+The runs cannot be done in parallel because counters and unique physician and physician institution providers are detected and carried over multiple runs (saved in BASE\_ETL\_CONTROL\_DIRECTORY). I recommend running them sequentially from 1 through 20 to produce a complete ETL of the approximately 2.33M patients. If you wanted only 1/20th of the data, you could run only sample number 1 and load the resulting .csv files into your database.
 
-Note: - On average, the transform.py program takes approximately 45-60 minutes to process one input file (e.g. DE_1).  We executed the program
-on an Intel Xeon CPU E3-1271 v3, with 16GB of memory and it took approximately 14 hours to process all 20 DE files.
+Note: - On average, the transform.py program takes approximately 45-60 minutes to process one input file (e.g. DE_1).  We executed the program on an Intel Xeon CPU E3-1271 v3, with 16GB of memory and it took approximately 14 hours to process all 20 DE files.
 
 All the paths are taking from the ``.env`` file that was set up previously.
 

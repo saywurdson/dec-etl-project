@@ -1,8 +1,6 @@
 .DS_Store
 *.pyc
 *.ipynb
-.db
-/dec-etl-project/data/BASE_OUTPUT_DIRECTORY
-/dec-etl-project/data/BASE_ETL_CONTROL_DIRECTORY
-/dec-etl-project/data/BASE_OMOP_INPUT_DIRECTORY
-/dec-etl-project/data/BASE_SYNPUF_INPUT_DIRECTORY
+*.db
+*.csv
+*.txt
