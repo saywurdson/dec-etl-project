@@ -1,12 +1,7 @@
 from constants import PRESCRIPTION_DRUG_RECORD, INPATIENT_CLAIMS_RECORD, OUTPATIENT_CLAIMS_RECORD, CARRIER_CLAIMS_RECORD
 
-#-=================================
-#-=================================
 class PrescriptionDrug(object):
     def __init__(self, record):
-        # self.record = record
-        # self.fields = record.split(',')
-        # it's already split
         self.fields = record
 
     @property
@@ -41,8 +36,7 @@ class PrescriptionDrug(object):
     def TOT_RX_CST_AMT(self):
         return self.fields[PRESCRIPTION_DRUG_RECORD.TOT_RX_CST_AMT]
 
-#-=================================
-#-=================================
+
 class InpatientClaim(object):
     def __init__(self, record):
         self.fields = record
@@ -239,8 +233,7 @@ class OutpatientClaim(object):
             if len(self.fields[ix]) > 0: codes.append(self.fields[ix])
         return codes
 
-#-=================================
-#-=================================
+
 class CarrierClaimLine(object):
     def __init__(self, PRF_PHYSN_NPI, TAX_NUM, HCPCS_CD, LINE_NCH_PMT_AMT, LINE_BENE_PTB_DDCTBL_AMT,
                 LINE_BENE_PRMRY_PYR_PD_AMT, LINE_COINSRNC_AMT, LINE_ALOWD_CHRG_AMT, LINE_PRCSG_IND_CD, LINE_ICD9_DGNS_CD):
@@ -264,8 +257,7 @@ class CarrierClaimLine(object):
             return True
         return False
 
-#-=================================
-#-=================================
+
 class CarrierClaim(object):
     def __init__(self, record):
         self.fields = record

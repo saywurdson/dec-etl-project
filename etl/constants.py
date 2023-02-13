@@ -18,7 +18,6 @@ class OMOP_CONSTANTS(object):
     DRUG_TYPE_PRESCRIPTION              = "38000175"
     CURRENCY_US_DOLLAR                  = "44818668"
 
-    # we'll add to these for the subsequent positions
     INPAT_PROCEDURE_1ST_POSITION        = 38000251
     INPAT_CONDITION_1ST_POSITION        = 38000200
 
