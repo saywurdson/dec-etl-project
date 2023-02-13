@@ -1745,7 +1745,7 @@ if __name__ == '__main__':
     current_sample_number = args.sample_number
     SAMPLE_RANGE = [current_sample_number]
 
-    current_stats_filename = os.path.join(BASE_OUTPUT_DIRECTORY,'etl_stats.txt_{0}'.format(current_sample_number))
+    current_stats_filename = os.path.join(BASE_OUTPUT_DIRECTORY,'etl_stats_{0}.txt'.format(current_sample_number))
     if os.path.exists(current_stats_filename): os.unlink(current_stats_filename)
 
     log_stats('CMS_ETL starting')
@@ -1833,7 +1833,7 @@ if __name__ == '__main__':
     persist_lookup_tables()
     table_ids.Save(table_ids_filename)
 
-    log_stats('CMS_ETL done')
+    log_stats('ETL complete')
     log_stats('Input Records------')
     for token in sorted(file_control.descriptor_list(which='input')):
         fd = file_control.get_Descriptor(token)
@@ -1846,4 +1846,4 @@ if __name__ == '__main__':
             log_stats('\tFile: {0:50}, records_written={1:10}'.format(fd.token, fd.records_written))
 
 
-    print('** done **')
+    print('** transform.py = done **')

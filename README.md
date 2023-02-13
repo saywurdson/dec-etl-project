@@ -37,17 +37,17 @@ They can either be downloaded with a python utility script (get_synpuf_files.py)
 In the ETL-CMS/scripts folder, there is a python program 'get_synpuf_files.py',
 which can be run to fetch one or more of the 20 SynPUF data sets. Run as follows:
 
-``python get_synpuf_files.py path/to/output/directory <SAMPLE> ... [SAMPLE]``
+``python extract.py path/to/output/directory <SAMPLE> ... [SAMPLE]``
 
 Where each SAMPLE is a number from 1 to 20, representing the 20 parts of the CMS data. If you only wanted to obtain samples 4 and 15, you would run:
 
-``python get_synpuf_files.py path/to/output/directory 4 15``
+``python extract.py path/to/output/directory 4 15``
 
 To obtain all of the data, run:
 
-``python get_synpuf_files.py path/to/output/directory 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20``
+``python extract.py path/to/output/directory 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20``
 OR
-``python get_synpuf_files.py path/to/output/directory all``
+``python extract.py path/to/output/directory all``
 
 ### Manual download:
 Hyperlinks to the 20 parts can be found here:
@@ -77,6 +77,7 @@ SNOMED, ICD9CM, ICD9Proc, CPT4, HCPCS, LOINC, RxNorm, and NDC.
 - Because CPT4 vocabulary is not part of CONCEPT.csv file, one must download it with the provided cpt4.jar program via:
 ``java -Dumls-apikey=<xxx> -jar cpt4.jar 5 <output-file-name>``, which will append the CPT4 concepts to the CONCEPT.csv file. You will need to pass in your UMLS credentials in order for this command to work. Only ``apikey`` and ``5`` are required.
 - Note: This command works with Java version 10 or below.
+
 - Note: These files as of 2023-02-07 are available in the /workspaces/practice/cms-synpuf/Data/BASE_OMOP_INPUT_DIRECTORY directory.
 
 ## Setup the environment file

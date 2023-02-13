@@ -184,4 +184,4 @@ if __name__ == '__main__':
     for sample_number in SAMPLE_RANGE:
         download_synpuf_files(OUTPUT_DIRECTORY, sample_number)
 
-    print(get_timestamp(),' Done')
+    print(get_timestamp(),' extract.py = done')
