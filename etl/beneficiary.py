@@ -4,9 +4,7 @@ from FileControl import FileControl, FileDescriptor
 from SynPufFiles import PrescriptionDrug, InpatientClaim, OutpatientClaim, CarrierClaimLine, CarrierClaim
 from constants import PRESCRIPTION_DRUG_RECORD, INPATIENT_CLAIMS_RECORD, OUTPATIENT_CLAIMS_RECORD, CARRIER_CLAIMS_RECORD, SYNPUF_FILE_TOKENS
 
-# -----------------------------------
 # This class stores the beneficiary data for all years for one person
-# -----------------------------------
 class Beneficiary(object):
     class YearData(object):
         def __init__(self,input_record):
@@ -117,7 +115,6 @@ class Beneficiary(object):
     def _prescription_records_in_date_order(self):
         return self._prescription_records_date_order_list
 
-
     def AddYearData(self, input_record):
         # first one in wins, if dupes
         file_year =  input_record[BENEFICIARY_SUMMARY_RECORD.FILE_YEAR]
@@ -141,8 +138,6 @@ class Beneficiary(object):
                 payer_plan_year_dict[year,'PLAN_CVRG_MOS_NUM'] = self.year_data_list[year].PLAN_CVRG_MOS_NUM
         return payer_plan_year_dict
 
-    #--------------------
-    #--------------------
     def ObservationPeriodList(self):
 
         obs_period_list = []
@@ -181,7 +176,6 @@ class Beneficiary(object):
             # print file_token, ' recs=', len(record_list)
             data_file.increment_recs_read(len(record_list))
 
-        #------
         def sort_by_date(record_list, record_list_date_order, fld_index):
             dates = []
             ## ugh -- need to learn the pythonic ways to do things !! sort list w/ dupes?

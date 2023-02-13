@@ -8,9 +8,6 @@ from constants import SYNPUF_FILE_TOKENS
 #  This assumes the SynPuf data is always the 3 years 2008, 2009, and 2010
 # -----------------------------------
 def combine_beneficiary_files(sample_directory, sample_number, output_bene_filename):
-    # log_stats('-'*80)
-    # log_stats('combine_beneficiary_files starting: sample_number=' + str(sample_number))
-    # log_stats('Writing to ->' + output_bene_filename)
 
     print('-'*80)
     print('combine_beneficiary_files starting: sample_number=' + str(sample_number))
@@ -109,18 +106,10 @@ class FileDescriptor(object):
         print('...mode                  =', mode)
         print('...complete_pathname     =', self.complete_pathname)
 
-        ## TODO:
-        # should be able to handle:
-        #   .zip -> .csv
-        #   combine beneficiary (208, 2009, 2010) . csv ->  comb
-        #   sort .csv -> .srt
-        #---------------
         if verify_exists:
             # handle carrier claims
             files = [self.complete_pathname]
-            #if self.token == 'carrier':
-            #    files = [ self.complete_pathname.replace('.csv', 'A.csv'),
-            #              self.complete_pathname.replace('.csv', 'B.csv')]
+
             for f in files:
                 print('.....verifying ->', f)
                 if not os.path.exists(f):
@@ -145,7 +134,7 @@ class FileDescriptor(object):
             print('.....verifying ->', sorted_path)
             if not os.path.exists(sorted_path):
                 zargs = []
-                if self.token == SYNPUF_FILE_TOKENS.BENEFICARY:  #Sort on second field
+                if self.token == SYNPUF_FILE_TOKENS.BENEFICARY:  # Sort on second field
                     fin = open(self.complete_pathname,"r")
                     firstline = fin.readline()
                     textfile = []
@@ -180,10 +169,13 @@ class FileDescriptor(object):
         return 'token={0:25}, mode={1:10}\n\t filename={2:50} \n\t complete_pathname={3:50} \n\t fd={4}\n\t '.format(self.token, self.mode, self.filename, self.complete_pathname, self.fd)
 
     def get_patient_records(self, DESYNPUF_ID, record_list):
-        ## assumes records are in DESYNPUF_ID order
-        ## we will table all the records for an ID
-        ## when that ID is requested, return them and table the next set
-        ## if requested ID is less than buffer-ID, return empty list
+
+        '''
+        1. assumes records are in DESYNPUF_ID order
+        2. we will table all the records for an ID
+        3. when that ID is requested, return them and table the next set
+        4. if requested ID is less than buffer-ID, return empty list
+        '''
 
         if self._at_eof:
             return
@@ -344,7 +336,6 @@ class FileControl(object):
             print('[{0}] {1}'.format(ix, self.files[filedesc]))
 
     def descriptor_list(self, which='all'):
-        # someday I'll learn list comprehension
         l = {}
         if which == 'all':
             return self.files

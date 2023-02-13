@@ -8,7 +8,7 @@ if sys.version_info[0] >= 3:
 This script will download and unzip SynPUF files from CMS.
 
 To run this script from the command line, type:
-python get_synpuf_files.py path/to/output/directory <SAMPLE NUMBER(S)> 
+python extract.py path/to/output/directory <SAMPLE NUMBER(S)> 
 
 This will download SynPUF files and extract them into path/to/output
 
@@ -17,7 +17,6 @@ The SynPUF files are split into 20 sets of files.
 For more information about SynPUF see:
 https://www.cms.gov/Research-Statistics-Data-and-Systems/Downloadable-Public-Use-Files/SynPUFs/DE_Syn_PUF.html
 '''
-
 
 # Read output directory from the command line
 if len(sys.argv) < 3 and not 'all' in sys.argv:
@@ -44,10 +43,7 @@ for i in range(2,len(sys.argv)):
 OUTPUT_DIRECTORY    = sys.argv[1]
 if not os.path.exists(OUTPUT_DIRECTORY): os.makedirs(OUTPUT_DIRECTORY)
 
-
-
-#-----------------------------------
-#-----------------------------------
+# Returns a formatted string representation of the current date and time in the format "YYYY-MM-DD HH:MM:SS". 
 def get_timestamp():
     return strftime("%Y-%m-%d %H:%M:%S")
 
@@ -125,7 +121,6 @@ def download_synpuf_files(sample_directory, sample_number):
     combine_beneficiary_files(download_directory, sample_number)
 
     print(get_timestamp(),' Done')
-
 
 #-----------------------------------
 #- combine 3 beneficiary files into 1, with the year prefixed
