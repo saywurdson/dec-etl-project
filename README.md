@@ -18,7 +18,7 @@ The Entire pipeline takes about 2 hours to run. If testing, please only select o
 
 The ETL process comes in a Docker container with all necessary files and packages. To run the ETL, you need to have Docker installed on your machine. You can download Docker from [here](https://www.docker.com/products/docker-desktop).
 
-The original ETL required python 2.7 and the dotenv library, but some code has been updated to be compatible with python 3 and has been tested with python 3.11
+The [original ETL](https://github.com/OHDSI/ETL-CMS) required python 2.7 and the dotenv library, but some code has been updated to be compatible with python 3 and has been tested with python 3.11
 
 ### Download SynPUF input data
 The SynPUF data is divided into 20 parts (8 files per part), and the files for each part should be saved in respective directories DE_1 through DE_20. They can either be downloaded with a python utility script (``extract.py``) or manually, described in the next two subsections.
