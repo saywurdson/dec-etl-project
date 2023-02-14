@@ -6,7 +6,7 @@ that can then be bulk-loaded into your RDBMS of choice.
 
 ## Overview of Steps
 
-1. Clone the repo and run the docker container
+1. Clone the repo and build your docker container from the provided Dockerfile
 2. cd into the etl directory
 3. Type 'python pipeline.py' to run the ETL - pipeline.py is a script that runs the 3 etl steps, extract.py, transform.py, and load.py
 4. Enter answers to the prompts
